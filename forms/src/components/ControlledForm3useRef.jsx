@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import style from './ControlledForm2.module.css';
 
 
@@ -12,13 +12,32 @@ const formInitialState = {//  const [formValues, setFormValues] = useState({
     running: false,       //     running: false,
 };                        //   });
 
-const ControlledForm2Example = () => { 
-
+const ControlledForm3useRef = ({formRef}) => {
+    
     const [formValues, setFormValues] = useState(formInitialState);
     const [errors, setErrors] = useState({});
+    
+//**************************************************************************************** */
+    const isMountedRef = useRef(false);
+    const usernameInputRef = useRef();
 
 
+    useEffect(() => {
+        // usernameInputRef.current.focus();
+    }, []);
 
+
+     // Executes only on update
+    useEffect(() => {
+        if(!isMountedRef.current){
+            isMountedRef.current = true;
+            return;
+        }
+
+        console.log('Form is updated!');
+    },[formValues]);
+
+//**************************************************************************************** */
     const changeHandler = (e) => {
         let value = '';
 
@@ -72,7 +91,7 @@ const ControlledForm2Example = () => {
     <div className='App'>
         <h1>Controlled Form 2</h1>
 
-        <form  onSubmit={submitHandler}>
+        <form  ref={formRef} onSubmit={submitHandler}>
             <div>
                 <label>Username: </label>
                 <input 
@@ -81,6 +100,7 @@ const ControlledForm2Example = () => {
                     name='username'
                     value={formValues.username}
                     onChange={changeHandler} 
+                    onBlur={() => console.log('onBlur')} //! do logic after click & unclick on field (used to validation messenge)
                 />
             </div>
             <div>
@@ -135,4 +155,4 @@ const ControlledForm2Example = () => {
   )
 }
 
-export default ControlledForm2Example;
+export default ControlledForm3useRef;
