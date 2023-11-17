@@ -1,0 +1,1 @@
+# to run server in terminal write -->  node server  -->  http://localhost:3030/
