@@ -7,7 +7,7 @@ const GameListCard = ({ title, category, _id, imageUrl }) => {
         <h1>GameListCard</h1>
          <div className="allGames">
             <div className="allGames-info">
-                <img src={imageUrl} />
+                <img src={imageUrl}  alt='randomImage game'/>
                 <h6>{category}</h6>
                 <h2>{title}</h2>
                 <Link to={`/games/${_id}`} className="details-button">Details</Link>

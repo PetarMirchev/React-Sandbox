@@ -8,14 +8,14 @@ const baseUrl = 'http://localhost:3030/jsonstore/games';
 export const getAll = async () =>{
     const result = await requestLibMyAxios.get(baseUrl);
 
-    return Object.values(result);
+    return Object.values(result); // 'Test game', 'Fantasy', '112', ....
 };
 
 
 export const create = async (elementData) =>{
     const result = await requestLibMyAxios.post(baseUrl, elementData);
 
-    return result;
+    return result; 
 };
 
 

@@ -7,21 +7,28 @@ import * as commentService from '../../services/commentService';
 const GameDetails = () => {
 
   const { gameId } = useParams(); // call from ROUTER to get the specific ID --> /c64db398-91cd-487c-b900-86058c0422f8
-  const [game, setGame] = useState({});
+  const [ game, setGame] = useState({});
+  const [ comments, setComments] = useState([]);
 
 
   useEffect(() => {
       gameService.getOne(gameId).then((data) => setGame(data)).catch((err) => console.log(err));
+
+      //.then((data) => setComments(data)) <--- is same as ---> .then(setComments)
+      commentService.getAll(gameId).then(setComments).catch((err) => console.log(err));
+
   }, [gameId]);
 
 
   const addCommentHandler = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget); //get from FORM input -->username, comment
+    const formData = new FormData(e.currentTarget); //get from FORM input --> name="username", name="comment"...
     const newCommentAdd = await commentService.create(gameId, formData.get('username'), formData.get('comment'));
 
-    console.log(newCommentAdd);
+    //console.log(newCommentAdd);
+    //take the current State & add new item --> to do that spread (...) old data and add new
+    setComments(state => [...state, newCommentAdd]);
   };
 
 
@@ -41,16 +48,16 @@ const GameDetails = () => {
             <div className="details-comments">
                 <h2>Comments:</h2>
                 <ul>
-                    {/* {comments.map(({ _id, username, text }) => (
-                        <li key={_id} className="comment">
-                            <p>{username}: {text}</p>
-                        </li>
-                    ))} */}
+                    {comments.map(({ _id, username, text }) => (
+                      <li key={_id} className='comment'>
+                          <p>{username}: {text}</p>
+                      </li>
+                    ))}
                 </ul>
 
-                {/* {comments.length === 0 && (
+                {comments.length === 0 && ( // return [] --> 'Test game', 'Fantasy', '112', ....
                     <p className="no-comment">No comments.</p>
-                )} */}
+                )}
             </div>
 
             {/* <!-- Edit/Delete buttons ( Only for creator of this game )  -->
