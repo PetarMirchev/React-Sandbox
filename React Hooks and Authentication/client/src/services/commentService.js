@@ -1,6 +1,8 @@
 import * as requestLibMyAxios from '../lib/request';
 
-const baseUrl = 'http://localhost:3030/jsonstore/comments';
+const baseUrl = 'http://localhost:3030/data/comments';
+
+// const baseUrl = 'http://localhost:3030/jsonstore/comments';
 //similar logic to gameService.js !
 
 export const create = async (gameId, username, text) => {

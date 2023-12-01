@@ -14,7 +14,7 @@ const createGameSubmitHandler = async (e) => {
     //console.log(gameData);
     
     try {
-        const result = await gameService.create_1(gameData);
+        const result = await gameService.create(gameData);
         console.log(result);
 
         navigate('/games');    

@@ -27,8 +27,15 @@ export const AuthProvider = ({ children }) => {
 
 
     const registerSubmitHandler = async ( values ) => {
-        //! TODO
+        const result = await authService.register(values.email, values.password);
+
+        setAuth(result);
+
+        localStorage.setItem('accessToken', result.accessToken);
+
+        navigate('/'); //Path.Home
     };
+    
 
     const logoutHandler = () => {
         setAuth({});
@@ -40,16 +47,16 @@ export const AuthProvider = ({ children }) => {
         loginSubmitHandler,
         registerSubmitHandler,
         logoutHandler,
-        username: auth.username || auth.email,
+        username:  auth.username || auth.email,
         email: auth.email,
         userId: auth._id,
         isAuthenticated: !!auth.accessToken,
     }
 
   return (
-   <AuthContext.Provider value={values}>
-      {children}
-   </AuthContext.Provider>
+    <AuthContext.Provider value={values}>
+        {children}
+    </AuthContext.Provider>
   );
 };
 

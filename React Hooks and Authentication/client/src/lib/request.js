@@ -1,33 +1,3 @@
-export const request = async (method, url, data) => {
-    const response = await fetch(url, {
-       method, 
-    });
-
-    if(!response.ok){
-        throw new Error(response.message);
-    }
-
-    const result = await response.json()
-    return result;
-};
-
-//Base Create Method --- up is part of this!
-// export const create = async (gameData) => {
-//     const baseUrl_1 = 'http://localhost:3030/jsonstore'
-//     const response = await fetch(`${baseUrl_1}/games`, {
-//         method: 'POST',
-//         headers: {
-//             'content-type': 'application/json'
-//         },
-//         body: JSON.stringify(gameData)
-//     });
-
-//     const result = await response.json();
-//     return result;
-// };
-
-
-//******************************************************************************************************** */
 
 //!custom helper logic for creating requests for server (simulates similar interface as AXIOS in use .get(...))
 const buildOptions = (data) => { // support build request1 body & headers
@@ -40,6 +10,15 @@ const buildOptions = (data) => { // support build request1 body & headers
         options.body = JSON.stringify(data);
     }
 
+    const token = localStorage.getItem('accessToken');
+
+    if(token) {
+        options.headers = {
+            ...options.headers,
+            'X-Authorization': token,
+        };
+    }
+
     return options;
 };
 
@@ -49,7 +28,18 @@ const request1 = async (method, url, data) => {
         method, // 'GET', 'POST'....
     });
 
+    //if no content (204)
+    if (response.status === 204) {
+        return {};
+    }
+
     const result = await response.json();
+
+
+    if (!response.ok){
+        throw result;
+    }
+
     return result;
 };
 
