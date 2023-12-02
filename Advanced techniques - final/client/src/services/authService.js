@@ -4,7 +4,7 @@ const baseUrl = 'http://localhost:3030/users';
 
 
 export const register = async ( email, password ) => {
-    requestLibMyAxios.post(`${baseUrl}/register`, {
+    await requestLibMyAxios.post(`${baseUrl}/register`, {
         email,
         password,
     })

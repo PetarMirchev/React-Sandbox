@@ -90,11 +90,18 @@ const GameDetails = () => {
             <div className="details-comments">
                 <h2>Comments:</h2>
                 <ul>
-                    {comments.map(({ _id, text, owner: {email} }) => (
+                    {comments.map(({ _id, text, owner: {username} }) => (
+                      <li key={_id} className='comment'>
+                          <p>{username}: {text}</p>
+                      </li>
+                    ))}
+
+                    {/* same as up but show 'username' on post comments! */}
+                    {/* {comments.map(({ _id, text, owner: {email} }) => (
                       <li key={_id} className='comment'>
                           <p>{email}: {text}</p>
                       </li>
-                    ))}
+                    ))} */}
                 </ul>
 
                 {comments.length === 0 && ( // return [] --> 'Test game', 'Fantasy', '112', ....
@@ -113,15 +120,17 @@ const GameDetails = () => {
             )}
         </div>
 
-        <article className="create-comment">
-            <label>Add new comment:</label>
-            {/* <form className="form" onSubmit={addCommentHandler}> */}
-            <form className="form" onSubmit={onSubmit}>
-                {/* <input type="text" name="username" placeholder="username" />  //only for addCommentHandler //v1.0 */}
-                <textarea name="comment" value={values.comment} onChange={onChange}  placeholder="Comment......"></textarea>
-                <input className="btn submit" type="submit" value="Add Comment" />
-            </form>
-        </article>
+          {userId && ( // if no user is logged in not show the comment form!
+            <article className="create-comment">
+                <label>Add new comment:</label>
+                {/* <form className="form" onSubmit={addCommentHandler}> */}
+                <form className="form" onSubmit={onSubmit}>
+                    {/* <input type="text" name="username" placeholder="username" />  //only for addCommentHandler //v1.0 */}
+                    <textarea name="comment" value={values.comment} onChange={onChange}  placeholder="Comment......"></textarea>
+                    <input className="btn submit" type="submit" value="Add Comment" />
+                </form>
+            </article>
+          )}
     </section>
   )
 }
