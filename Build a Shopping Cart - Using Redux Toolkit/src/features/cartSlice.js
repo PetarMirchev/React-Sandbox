@@ -13,7 +13,7 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
 
-        addToCart: ( state, action) => {
+        addToCart: (state, action) => {
             let find = state.cart.findIndex((item) => item.id === action.payload.id);
                 if(find >= 0){
                     state.cart[find].quantity += 1;
@@ -25,11 +25,11 @@ const cartSlice = createSlice({
         getCartTotal: (state) => {
             let { totalQuantity, totalPrice } = state.cart.reduce(
                 (cartTotal, cartItem) => {
-                    console.log("cartTotal:", cartTotal);
-                    console.log("cartItem:", cartItem);
+                    // console.log("cartTotal:", cartTotal);
+                    // console.log("cartItem:", cartItem);
 
                     const { price, quantity } = cartItem;
-                    console.log(price, quantity);
+                    // console.log(price, quantity);
 
                     const itemTotal = price * quantity;
                     cartTotal.totalPrice += itemTotal;
@@ -46,21 +46,38 @@ const cartSlice = createSlice({
         },
 
         removeItem: (state, action) => {
-            //TODO
+            state.cart = state.cart.filter( (item) => item.id !== action.payload);
         },
 
         increaseItemQuantity: (state, action) => {
-            //TODO
+            state.cart = state.cart.map( (item) => {
+                if (item.id === action.payload) {
+                    return {...item, quantity: item.quantity + 1 };
+                }
+
+                return item;
+            });
         },
 
         decreaseItemQuantity: (state, action) => {
-            //TODO
+            state.cart = state.cart.map((item) => {
+                if (item.id === action.payload) {
+                    if(item.quantity <= 0){ // check if quantity is 0 or -1      
+                        // console.log({item});                     
+                       return item;
+                    }
+
+                    return {...item, quantity: item.quantity - 1 };
+                }
+
+                return item;
+            });
         },
 
     },
 });
 
 
-export const { addToCart, getCartTotal, removeItem, increaseItemQuantity, decreaseItemQuantity, } = cartSlice.actions;
+export const { addToCart, getCartTotal, removeItem, increaseItemQuantity, decreaseItemQuantity } = cartSlice.actions;
 
 export default cartSlice.reducer;

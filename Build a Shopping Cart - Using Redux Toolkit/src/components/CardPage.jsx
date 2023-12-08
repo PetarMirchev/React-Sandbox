@@ -1,12 +1,20 @@
 import React from 'react'
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCartTotal, removeItem, increaseItemQuantity, decreaseItemQuantity } from '../features/cartSlice';
 
 const CardPage = () => {
 
     const {cart, totalQuantity, totalPrice} = useSelector((state) => state.allCart);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getCartTotal());
+    },[cart])
+
 
   return (
     <div className='container justify-content-center'>
@@ -36,11 +44,12 @@ const CardPage = () => {
                                         <div className="row">description: .....</div>
                                     </div>
                                     <div className="col">
-                                        <a href="#">-</a><a href="#" className="border">{data.quantity}</a><a href="#">+</a>
-                                        
+                                        <a href="#" onClick={() => dispatch(decreaseItemQuantity(data.id))}>-</a>
+                                        <a href="#" className="border">{data.quantity}</a>
+                                        <a href="#" onClick={() => dispatch(increaseItemQuantity(data.id))}>+</a>       
                                     </div>
                                     <div className="col">&euro; {data.price} </div>
-                                    <div className="col"><p className="close">&#10005;</p></div>
+                                    <div className="col"><p className="close" onClick={() => dispatch(removeItem(data.id))}>&#10005;</p></div>
                                 </div>
                             </div>
                             ))}
